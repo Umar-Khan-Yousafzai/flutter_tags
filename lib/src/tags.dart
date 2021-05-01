@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/src/suggestions_textfield.dart';
 
 import '../flutter_tags.dart';
 import 'util/custom_wrap.dart';
-import 'package:flutter_tags/src/suggestions_textfield.dart';
 
 ///ItemBuilder
 typedef Widget ItemBuilder(int index);
@@ -87,9 +87,42 @@ class TagsState extends State<Tags> {
   Orientation _orientation = Orientation.portrait;
   double _width = 0;
 
-  final List<DataList> _list = List();
+  final List<DataList> _list = [];
 
   List<Item> get getAllItem => _list.toList();
+
+  unSelectAll() {
+    for (int i = 0; i < _list.length; i++) {
+      if (_list[i].active == true) {
+        setState(() {
+          _list[i].active = false;
+        });
+      }
+    }
+  }
+
+  SelectAll() {
+    for (int i = 0; i < _list.length; i++) {
+      if (_list[i].active == false) {
+        setState(() {
+          _list[i].active = true;
+        });
+      }
+    }
+  }
+
+  List<Item> getSelectedItems() {
+    final List<DataList> _list2 = _list;
+    final List<DataList> _list3 = [];
+    for (int i = 0; i < _list2.length; i++) {
+      if (_list2[i].active == true) {
+        print("THE _list2 ITEMS +++" + _list2[i].title);
+        _list3.add(_list2[i]);
+      }
+    }
+    print("THE _list3 length" + _list3.length.toString());
+    return _list3.toList();
+  }
 
   //get the current width of the screen
   void _getWidthContext() {
@@ -108,8 +141,7 @@ class TagsState extends State<Tags> {
   @override
   Widget build(BuildContext context) {
     // essential to avoid infinite loop of addPostFrameCallback
-    if (widget.symmetry &&
-        (MediaQuery.of(context).orientation != _orientation || _width == 0)) {
+    if (widget.symmetry && (MediaQuery.of(context).orientation != _orientation || _width == 0)) {
       _orientation = MediaQuery.of(context).orientation;
       _getWidthContext();
     }
@@ -164,8 +196,7 @@ class TagsState extends State<Tags> {
               tagsTextField: widget.textField,
               onSubmitted: (String str) {
                 if (!widget.textField.duplicates) {
-                  final List<DataList> lst =
-                      _list.where((l) => l.title == str).toList();
+                  final List<DataList> lst = _list.where((l) => l.title == str).toList();
 
                   if (lst.isNotEmpty) {
                     lst.forEach((d) => d.showDuplicate = true);
@@ -173,14 +204,13 @@ class TagsState extends State<Tags> {
                   }
                 }
 
-                if (widget.textField.onSubmitted != null)
-                  widget.textField.onSubmitted(str);
+                if (widget.textField.onSubmitted != null) widget.textField.onSubmitted(str);
               },
             ),
           )
         : null;
 
-    List<Widget> finalList = List();
+    List<Widget> finalList = [];
 
     List<Widget> itemList = List.generate(widget.itemCount, (i) {
       final Widget item = widget.itemBuilder(i);
@@ -198,16 +228,14 @@ class TagsState extends State<Tags> {
       return item;
     });
 
-    if (widget.horizontalScroll && widget.textDirection == TextDirection.rtl)
-      itemList = itemList.reversed.toList();
+    if (widget.horizontalScroll && widget.textDirection == TextDirection.rtl) itemList = itemList.reversed.toList();
 
     if (textField == null) {
       finalList.addAll(itemList);
       return finalList;
     }
 
-    if (widget.horizontalScroll &&
-        widget.verticalDirection == VerticalDirection.up) {
+    if (widget.horizontalScroll && widget.verticalDirection == VerticalDirection.up) {
       finalList.add(textField);
       finalList.addAll(itemList);
     } else {
@@ -232,9 +260,7 @@ class TagsState extends State<Tags> {
 
 /// Inherited Widget
 class DataListInherited extends InheritedWidget {
-  DataListInherited(
-      {Key key, this.list, this.symmetry, this.itemCount, Widget child})
-      : super(key: key, child: child);
+  DataListInherited({Key key, this.list, this.symmetry, this.itemCount, Widget child}) : super(key: key, child: child);
 
   final List<DataList> list;
   final bool symmetry;
@@ -248,18 +274,12 @@ class DataListInherited extends InheritedWidget {
 
   /*static DataListInherited of(BuildContext context) =>
       context.inheritFromWidgetOfExactType(DataListInherited);*/
-  static DataListInherited of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType();
+  static DataListInherited of(BuildContext context) => context.dependOnInheritedWidgetOfExactType();
 }
 
 /// Data List
 class DataList extends ValueNotifier implements Item {
-  DataList(
-      {@required this.title,
-      this.index,
-      bool highlights = false,
-      bool active = true,
-      this.customData})
+  DataList({@required this.title, this.index, bool highlights = false, bool active = true, this.customData})
       : _showDuplicate = highlights,
         _active = active,
         super(active);

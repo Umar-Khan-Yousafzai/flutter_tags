@@ -1,7 +1,7 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_tags/flutter_tags.dart';
 
 void main() => runApp(MyApp());
@@ -28,8 +28,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   TabController _tabController;
   ScrollController _scrollViewController;
 
@@ -132,12 +131,8 @@ class _MyHomePageState extends State<MyHomePage>
                   SliverList(
                       delegate: SliverChildListDelegate([
                     Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey[300], width: 0.5))),
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey[300], width: 0.5))),
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: ExpansionTile(
                         title: Text("Settings"),
                         children: <Widget>[
@@ -185,13 +180,25 @@ class _MyHomePageState extends State<MyHomePage>
                                   });
                                 },
                               ),
+                              GestureDetector(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.clear,
+                                      size: 33,
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                  _tagStateKey.currentState.unSelectAll();
+                                  _tagStateKey.currentState.SelectAll();
+                                },
+                              ),
                               Padding(
                                 padding: EdgeInsets.all(5),
                               ),
                               DropdownButton(
-                                hint: _column == 0
-                                    ? Text("Not set")
-                                    : Text(_column.toString()),
+                                hint: _column == 0 ? Text("Not set") : Text(_column.toString()),
                                 items: _buildItems(),
                                 onChanged: (a) {
                                   setState(() {
@@ -211,8 +218,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         value: _horizontalScroll,
                                         onChanged: (a) {
                                           setState(() {
-                                            _horizontalScroll =
-                                                !_horizontalScroll;
+                                            _horizontalScroll = !_horizontalScroll;
                                           });
                                         }),
                                     Text('Horizontal scroll')
@@ -263,8 +269,7 @@ class _MyHomePageState extends State<MyHomePage>
                                   ),
                                   Text(_fontSize.toString()),
                                   Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
+                                    padding: EdgeInsets.symmetric(horizontal: 20),
                                   ),
                                   Container(
                                     height: 30,
@@ -284,8 +289,7 @@ class _MyHomePageState extends State<MyHomePage>
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 5),
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
                                   ),
                                   Container(
                                     height: 30,
@@ -334,12 +338,8 @@ class _MyHomePageState extends State<MyHomePage>
                   SliverList(
                       delegate: SliverChildListDelegate([
                     Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Colors.grey[300], width: 0.5))),
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey[300], width: 0.5))),
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: ExpansionTile(
                         title: Text("Settings"),
                         children: <Widget>[
@@ -353,8 +353,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         value: _withSuggesttions,
                                         onChanged: (a) {
                                           setState(() {
-                                            _withSuggesttions =
-                                                !_withSuggesttions;
+                                            _withSuggesttions = !_withSuggesttions;
                                           });
                                         }),
                                     Text('Suggestions')
@@ -390,8 +389,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         value: _horizontalScroll,
                                         onChanged: (a) {
                                           setState(() {
-                                            _horizontalScroll =
-                                                !_horizontalScroll;
+                                            _horizontalScroll = !_horizontalScroll;
                                           });
                                         }),
                                     Text('Horizontal scroll')
@@ -504,8 +502,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ))
               : (1 == 1
                   ? ItemTagsImage(
-                      image: NetworkImage(
-                          "https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png"),
+                      image: NetworkImage("https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png"),
                     )
                   : null),
           icon: (item == '0' || item == '1' || item == '2')
@@ -523,8 +520,7 @@ class _MyHomePageState extends State<MyHomePage>
                   },
                 )
               : null,
-          textScaleFactor:
-              utf8.encode(item.substring(0, 1)).length > 2 ? 0.8 : 1,
+          textScaleFactor: utf8.encode(item.substring(0, 1)).length > 2 ? 0.8 : 1,
           textStyle: TextStyle(
             fontSize: _fontSize,
           ),
@@ -572,8 +568,7 @@ class _MyHomePageState extends State<MyHomePage>
       symmetry: _symmetry,
       columns: _column,
       horizontalScroll: _horizontalScroll,
-      verticalDirection:
-          _startDirection ? VerticalDirection.up : VerticalDirection.down,
+      verticalDirection: _startDirection ? VerticalDirection.up : VerticalDirection.down,
       textDirection: _startDirection ? TextDirection.rtl : TextDirection.ltr,
       heightHorizontalScroll: 60 * (_fontSize / 14),
       textField: _textField,
@@ -591,11 +586,7 @@ class _MyHomePageState extends State<MyHomePage>
             combine: combine,
             image: index > 0 && index < 5
                 ? ItemTagsImage(image: AssetImage("img/p$index.jpg"))
-                : (1 == 1
-                    ? ItemTagsImage(
-                        image: NetworkImage(
-                            "https://image.flaticon.com/icons/png/512/44/44948.png"))
-                    : null),
+                : (1 == 1 ? ItemTagsImage(image: NetworkImage("https://image.flaticon.com/icons/png/512/44/44948.png")) : null),
             icon: (item == '0' || item == '1' || item == '2')
                 ? ItemTagsIcon(
                     icon: _icon[int.parse(item)],
@@ -610,8 +601,7 @@ class _MyHomePageState extends State<MyHomePage>
                 return true;
               },
             ),
-            textScaleFactor:
-                utf8.encode(item.substring(0, 1)).length > 2 ? 0.8 : 1,
+            textScaleFactor: utf8.encode(item.substring(0, 1)).length > 2 ? 0.8 : 1,
             textStyle: TextStyle(
               fontSize: _fontSize,
             ),
@@ -638,10 +628,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ],
                     context: context,
                     position: RelativeRect.fromRect(
-                        _tapPosition & Size(40, 40),
-                        Offset.zero &
-                            overlay
-                                .size) // & RelativeRect.fromLTRB(65.0, 40.0, 0.0, 0.0),
+                        _tapPosition & Size(40, 40), Offset.zero & overlay.size) // & RelativeRect.fromLTRB(65.0, 40.0, 0.0, 0.0),
                     )
                 .then((value) {
               if (value == 1) Clipboard.setData(ClipboardData(text: item));
